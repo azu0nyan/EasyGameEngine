@@ -1,5 +1,8 @@
 package ru.ege.engine;
 
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.World;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -29,6 +32,7 @@ public class EGEngine extends JFrame {
     private long lastFrameEnd;
     private long startTime;
     private Map<Integer, List<DrawableObject>> drawableObjectsDepthMap;
+    private World b2World;
 
     private EGEngine() {
         setRotationDirectionMultiplier(-1);
@@ -39,6 +43,7 @@ public class EGEngine extends JFrame {
         lastFrameEnd = System.currentTimeMillis();
         startTime = System.currentTimeMillis();
         drawableObjectsDepthMap = new ConcurrentSkipListMap<Integer, List<DrawableObject>>();
+        b2World = new World(new Vec2(0,0));
     }
 
     /**
@@ -49,7 +54,7 @@ public class EGEngine extends JFrame {
             while (true) {
                 long dt = System.currentTimeMillis() - lastFrameEnd;
                 lastFrameEnd = System.currentTimeMillis();
-                draw(dt);
+                drawAndUpdate(dt / 1000.0);
                 long frameLength = System.currentTimeMillis() - lastFrameEnd;
                 if(Settings.fps_limit != 0 && frameLength < 1000 / Settings.fps_limit){
                     try {
@@ -124,29 +129,29 @@ public class EGEngine extends JFrame {
         return result;
     }
 
-    private void draw(long dt) {
+    private void drawAndUpdate(double dt) {
         BufferStrategy bs = getBufferStrategy();
         Graphics2D g2d = (Graphics2D) bs.getDrawGraphics();
         g2d.clearRect(0, 0, getWidth(), getHeight());
 
 
         try {
-            drawAndUpdate(g2d, (int) dt);
+            drawAndUpdate(g2d,  dt);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        drawAndUpdateDrawableObjects(g2d, (int) dt);
+        drawAndUpdateDrawableObjects(g2d, dt);
 
         g2d.dispose();
         bs.show();
         Toolkit.getDefaultToolkit().sync();
     }
 
-    private void drawAndUpdateDrawableObjects(Graphics2D g2d, int dt){
+    private void drawAndUpdateDrawableObjects(Graphics2D g2d, double dt){
         drawableObjectsDepthMap.values().forEach(e -> e.forEach(d-> drawDrawableObject(d, g2d, dt)));
     }
 
-    public void drawDrawableObject(DrawableObject drawableObject, Graphics2D g2d, int dt){
+    public void drawDrawableObject(DrawableObject drawableObject, Graphics2D g2d, double dt){
         try{
             drawableObject.drawAndUpdate(g2d, dt / 1000.0);
         } catch (Exception e){
@@ -167,8 +172,8 @@ public class EGEngine extends JFrame {
      * @param graphics экземпляр класса graphics для рисования
      * @param dt       время прошедшее с проглого кадра
      */
-    public  void drawAndUpdate(Graphics2D graphics, int dt){
-
+    public  void drawAndUpdate(Graphics2D graphics, double dt){
+        getWorld().step((float) dt,6,2 );
     }
 
     /**
@@ -177,5 +182,9 @@ public class EGEngine extends JFrame {
      */
     public static void setRotationDirectionMultiplier(double multiplier){
         Vector2D.setRotationDirection(multiplier);
+    }
+
+    public World getWorld() {
+        return b2World;
     }
 }
