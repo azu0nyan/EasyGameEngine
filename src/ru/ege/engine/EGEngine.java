@@ -2,6 +2,7 @@ package ru.ege.engine;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
+import ru.ege.engine.smartDO.Camera;
 
 import javax.swing.*;
 import java.awt.*;
@@ -186,5 +187,12 @@ public class EGEngine extends JFrame {
 
     public World getWorld() {
         return b2World;
+    }
+
+    public void enableCamera() {
+        Camera c = new Camera();
+        i().addKeyListener(c);
+        i().addMouseMotionListener(c);
+        i().addMouseListener(c);
     }
 }
