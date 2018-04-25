@@ -16,7 +16,7 @@ public class Main {
         DebugObjects.addDebugObjects(EGEngine.i());
         EGEngine.i().enableCamera();
         Camera.enableControls();
-        EGEngine.i().getWorld().setGravity(new Vec2(0, 10));
+        EGEngine.i().getWorld().setGravity(new Vec2(0, 100));
 
         //Линии
         new BodyDO(new Vec2(900, 1000), 0, BodyType.STATIC, new Vec2(-1000, 0), new Vec2( 1000, 0));
@@ -24,7 +24,7 @@ public class Main {
         new BodyDO(new Vec2(50, 1000), (float) (Math.PI / 2), BodyType.STATIC, new Vec2(-1000, 0), new Vec2( 1000, 0));
         new BodyDO(new Vec2(1500, 50), (float) (Math.PI / 2), BodyType.STATIC, new Vec2(-1000, 0), new Vec2( 1000, 0));
         //Круг
-        BodyDO circleDO = new BodyDO(new Vec2(900, 700), 0, BodyType.STATIC, 100);
+        BodyDO circleDO = new BodyDO(new Vec2(900, 700), 0, BodyType.DYNAMIC, 100);
         circleDO.setColor(new Color(189, 8, 255));
 
         //Прямоугольник

@@ -1,6 +1,7 @@
 package ru.ege.engine;
 
 import com.sun.istack.internal.NotNull;
+import org.jbox2d.common.Vec2;
 
 /**
  * Двухмерный вектор, неизменяемы, все операции с векторами создают новые экземпляры.
@@ -271,5 +272,10 @@ public class Vector2D {
     }
     public static double distance(Vector2D v1, Vector2D v2){
         return v1.sub(v2).length();
+    }
+
+
+    public Vec2 toVec2(){
+        return new Vec2((float)x, (float)y);
     }
 }
