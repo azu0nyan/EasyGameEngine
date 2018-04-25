@@ -145,9 +145,9 @@ public class BodyDO extends SmartDrawableObject implements HasBody {
         g.setColor(color);
         Vector2D where = worldToScreen(body.getPosition());
         if(fill){
-            g.fillOval((int) (where.getX() - displayRad / 2.0), (int)(where.getY() - displayRad/ 2.0), (int)displayRad, (int)displayRad);
+            g.fillOval((int) (where.getX() - displayRad ), (int)(where.getY() - displayRad), (int)displayRad * 2, (int)displayRad * 2);
         } else {
-            g.drawOval((int) (where.getX() - displayRad / 2.0), (int)(where.getY() - displayRad/ 2.0), (int)displayRad, (int)displayRad);
+            g.drawOval((int) (where.getX() - displayRad ), (int)(where.getY() - displayRad), (int)displayRad * 2, (int)displayRad * 2);
         }
     }
 
